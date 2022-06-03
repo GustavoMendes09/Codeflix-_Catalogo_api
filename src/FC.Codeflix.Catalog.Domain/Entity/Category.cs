@@ -1,18 +1,18 @@
 ﻿using FC.Codeflix.Catalog.Domain.Exceptions;
+using FC.Codeflix.Catalog.Domain.SeedWork;
+using FC.Codeflix.Catalog.Domain.Validation;
 
 namespace FC.Codeflix.Catalog.Domain.Entity
 {
-    public class Category
+    public class Category : AggregateRoot
     {
-        public Guid Id { get; set; }
         public string Name { get; private set; }
         public string Description { get; private set; }
         public bool IsActive { get; set; }
         public DateTime CreatedAt { get; set; }
 
-        public Category(string name, string description, bool isActive = true)
+        public Category(string name, string description, bool isActive = true) : base()
         {
-            Id = Guid.NewGuid();
             Name = name;
             Description = description;
             IsActive = isActive;
@@ -21,12 +21,35 @@ namespace FC.Codeflix.Catalog.Domain.Entity
             Validate();
         }
 
-        public void Validate()
+        public void Activate()
         {
-            if(string.IsNullOrWhiteSpace(Name))
-                throw new EntityValidationException($"{nameof(Name)} should not bem empty or null");
-            if (Description is null)
-                throw new EntityValidationException($"{nameof(Description)} should not bem empty or null");
+            IsActive = true;
+            Validate();
         }
+
+        public void Deactivate()
+        {
+            IsActive = false;
+            Validate();
+        }
+
+        public void Update(string name, string? description = null)
+        {
+            Name = name;
+            Description = description ?? Description;
+            Validate();
+        }
+
+        private void Validate()
+        {
+            DomainValidation.NotNullOrEmpty(Name, nameof(Name));
+            DomainValidation.MinLenght(Name, 3,nameof(Name));
+            DomainValidation.MaxLenght(Name, 255,nameof(Name));
+
+            DomainValidation.NotNull(Description, nameof(Description));
+            DomainValidation.MaxLenght(Description, 10_000,nameof(Description));
+        }
+
+       
     }
 }
