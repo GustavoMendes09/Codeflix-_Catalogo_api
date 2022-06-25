@@ -40,7 +40,8 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.CreateCategory
 
 
         public CreateCategoryInput GetInput() =>
-            new(GetValidCategoryName(),
+            new(
+                GetValidCategoryName(),
                 GetValidCategoryDescription(),
                 getRandomBoolean()
                 );
