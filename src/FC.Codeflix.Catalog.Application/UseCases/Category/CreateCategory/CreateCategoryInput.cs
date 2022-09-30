@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FC.Codeflix.Catalog.Application.UseCases.Category.Commom;
+using MediatR;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FC.Codeflix.Catalog.Application.UseCases.Category.CreateCategory
 {
-    public class CreateCategoryInput
+    public class CreateCategoryInput : IRequest<CategoryModelOutput>
     {
         public string Name { get; set; }
         public string? Description { get; set; }

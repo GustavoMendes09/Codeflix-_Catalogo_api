@@ -4,13 +4,13 @@ using FC.Codeflix.Catalog.Domain.Exceptions;
 using FluentAssertions;
 using Moq;
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 using UseCases = FC.Codeflix.Catalog.Application.UseCases.Category.CreateCategory;
+using Entity = FC.Codeflix.Catalog.Domain.Entity;
 
-namespace FC.Codeflix.Catalog.UnitTests.Application.CreateCategory
+namespace FC.Codeflix.Catalog.UnitTests.Application.Category.CreateCategory
 {
     [Collection(nameof(CreateCategoryTestFixture))]
     public class CreateCategoryTest
@@ -40,7 +40,7 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.CreateCategory
             var output = await useCase.Handle(input, CancellationToken.None);
 
             repositoryMock.Verify(r =>
-            r.Insert(It.IsAny<Category>(), It.IsAny<CancellationToken>()),
+            r.Insert(It.IsAny<Entity.Category>(), It.IsAny<CancellationToken>()),
             Times.Once);
 
             unitOfWorkMock.Verify(u =>
@@ -52,13 +52,17 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.CreateCategory
             output.Description.Should().Be(input.Description);
             output.IsActive.Should().Be(input.IsActive);
             output.Id.Should().NotBeEmpty();
-            output.CreatedAt.Should().NotBeSameDateAs(default(DateTime));
+            output.CreatedAt.Should().NotBeSameDateAs(default);
         }
 
-        [Theory(DisplayName = nameof(ThrowWhenCantInstatiateAggregate))]
+        [Theory(DisplayName = nameof(ThrowWhenCantInstatiateCategory))]
         [Trait("Application", "CreateCategory - Use Cases")]
-        [MemberData(nameof(GetInvalidInputs))]
-        public async void ThrowWhenCantInstatiateAggregate(CreateCategoryInput input, string exceptionMessage)
+        [MemberData(
+            nameof(CreateCategoryTestDataGenerator.GetInvalidInputs),
+            parameters: 12,
+            MemberType = typeof(CreateCategoryTestDataGenerator)
+            )]
+        public async void ThrowWhenCantInstatiateCategory(CreateCategoryInput input, string exceptionMessage)
         {
             var useCase = new UseCases.CreateCategory(
                _fixture.GetRepositoryMock().Object,
@@ -72,8 +76,6 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.CreateCategory
                 .ThrowAsync<EntityValidationException>()
                 .WithMessage(exceptionMessage);
         }
-
-
 
         [Fact(DisplayName = nameof(CreateCategoryWithOnlyName))]
         [Trait("Application", "CreateCategory - Use Cases")]
@@ -92,7 +94,7 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.CreateCategory
             var output = await useCase.Handle(input, CancellationToken.None);
 
             repositoryMock.Verify(r =>
-            r.Insert(It.IsAny<Category>(), It.IsAny<CancellationToken>()),
+            r.Insert(It.IsAny<Entity.Category>(), It.IsAny<CancellationToken>()),
             Times.Once);
 
             unitOfWorkMock.Verify(u =>
@@ -104,7 +106,7 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.CreateCategory
             output.Description.Should().Be("");
             output.IsActive.Should().BeTrue();
             output.Id.Should().NotBeEmpty();
-            output.CreatedAt.Should().NotBeSameDateAs(default(DateTime));
+            output.CreatedAt.Should().NotBeSameDateAs(default);
         }
 
 
@@ -130,7 +132,7 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.CreateCategory
             var output = await useCase.Handle(input, CancellationToken.None);
 
             repositoryMock.Verify(r =>
-            r.Insert(It.IsAny<Category>(), It.IsAny<CancellationToken>()),
+            r.Insert(It.IsAny<Entity.Category>(), It.IsAny<CancellationToken>()),
             Times.Once);
 
             unitOfWorkMock.Verify(u =>
@@ -142,67 +144,7 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.CreateCategory
             output.Description.Should().Be(input.Description);
             output.IsActive.Should().BeTrue();
             output.Id.Should().NotBeEmpty();
-            output.CreatedAt.Should().NotBeSameDateAs(default(DateTime));
-        }
-
-        private static IEnumerable<object[]> GetInvalidInputs()
-        {
-            var fixture = new CreateCategoryTestFixture();
-            var invalidInputList = new List<object[]>();
-
-            var invalidInputShortName = fixture.GetInput();
-
-            invalidInputShortName.Name = invalidInputShortName.Name.Substring(0, 2);
-            invalidInputList.Add(new object[]
-            {
-                invalidInputShortName,
-                "Name should be at leats 3 characters long"
-            });
-
-
-            var invalidInputTooLongName = fixture.GetInput();
-            var tooLongNameForCategory = fixture.Faker.Commerce.ProductName();
-
-            while (tooLongNameForCategory.Length <= 255)
-                tooLongNameForCategory = $"{tooLongNameForCategory} {fixture.Faker.Commerce.ProductName()}";
-
-            invalidInputTooLongName.Name = tooLongNameForCategory;
-
-            invalidInputList.Add(new object[]
-            {
-                invalidInputTooLongName,
-                "Name should be less or equal 255 characters long"
-            });
-
-
-            //description não pode ser nula
-            var invalidInputDescriptionNull = fixture.GetInput();
-            invalidInputDescriptionNull.Description = null;
-
-            invalidInputList.Add(new object[]
-            {
-                invalidInputDescriptionNull,
-                "Description should not be null"
-            });
-
-            // description não pode ser maior que 10000 caracters
-            var invalidInputTooLongDescription = fixture.GetInput();
-            var tooLongDescriptionForCategory = fixture.Faker.Commerce.ProductDescription();
-
-            while (tooLongDescriptionForCategory.Length <= 10_000)
-                tooLongDescriptionForCategory = $"{tooLongDescriptionForCategory} {fixture.Faker.Commerce.ProductDescription()}";
-
-            invalidInputTooLongDescription.Description = tooLongDescriptionForCategory;
-
-            invalidInputList.Add(new object[]
-            {
-                invalidInputTooLongDescription,
-                "Description should be less or equal 10000 characters long"
-            });
-
-
-            return invalidInputList;
-
+            output.CreatedAt.Should().NotBeSameDateAs(default);
         }
     }
 }
