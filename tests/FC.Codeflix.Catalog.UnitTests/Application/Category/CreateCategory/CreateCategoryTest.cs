@@ -44,7 +44,7 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.Category.CreateCategory
             Times.Once);
 
             unitOfWorkMock.Verify(u =>
-            u.Commit(It.IsAny<CancellationToken>()),
+            u.CommitAsync(It.IsAny<CancellationToken>()),
             Times.Once);
 
             output.Should().NotBeNull();
@@ -98,7 +98,7 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.Category.CreateCategory
             Times.Once);
 
             unitOfWorkMock.Verify(u =>
-            u.Commit(It.IsAny<CancellationToken>()),
+            u.CommitAsync(It.IsAny<CancellationToken>()),
             Times.Once);
 
             output.Should().NotBeNull();
@@ -136,7 +136,7 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.Category.CreateCategory
             Times.Once);
 
             unitOfWorkMock.Verify(u =>
-            u.Commit(It.IsAny<CancellationToken>()),
+            u.CommitAsync(It.IsAny<CancellationToken>()),
             Times.Once);
 
             output.Should().NotBeNull();

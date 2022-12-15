@@ -24,7 +24,7 @@ namespace FC.Codeflix.Catalog.Application.UseCases.Category.DeleteCategory
         {
             var category = await _categoryRepository.Get(request.Id, cancellationToken);
             await _categoryRepository.Delete(category, cancellationToken);
-            await _unitOfWork.Commit(cancellationToken);
+            await _unitOfWork.CommitAsync(cancellationToken);
             return Unit.Value;
         }
     }

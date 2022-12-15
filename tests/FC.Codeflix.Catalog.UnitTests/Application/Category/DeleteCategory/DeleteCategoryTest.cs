@@ -39,7 +39,7 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.Category.DeleteCategory
             repositoryMock.Verify(x => x.Get(CategoryExample.Id, It.IsAny<CancellationToken>()), Times.Once);
             repositoryMock.Verify(x => x.Delete(CategoryExample, It.IsAny<CancellationToken>()), Times.Once);
 
-            unitOfWorkMock.Verify(x => x.Commit(It.IsAny<CancellationToken>()), Times.Once);
+            unitOfWorkMock.Verify(x => x.CommitAsync(It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [Fact(DisplayName = nameof(ThrowWhenCategoryNotFound))]

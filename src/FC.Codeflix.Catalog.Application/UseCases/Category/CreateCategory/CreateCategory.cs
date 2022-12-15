@@ -21,7 +21,7 @@ namespace FC.Codeflix.Catalog.Application.UseCases.Category.CreateCategory
             var category = new DomainEntity.Category(input.Name,input.Description, input.IsActive);
 
             await _categoryRepository.Insert(category, cancellationToken);
-            await _unitOfWork.Commit(cancellationToken);
+            await _unitOfWork.CommitAsync(cancellationToken);
 
             return CategoryModelOutput.FromCategory(category);
         }

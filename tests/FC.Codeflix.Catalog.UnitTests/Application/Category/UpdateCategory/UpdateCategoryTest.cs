@@ -57,7 +57,7 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.Category.UpdateCategory
             .Update(exampleCategory, It.IsAny<CancellationToken>()), Times.Once);
 
             unitOfWorkMock.Verify(u =>
-            u.Commit(It.IsAny<CancellationToken>()), Times.Once);
+            u.CommitAsync(It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [Theory(DisplayName = nameof(UpdateCategory))]
@@ -95,7 +95,7 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.Category.UpdateCategory
             .Update(exampleCategory, It.IsAny<CancellationToken>()), Times.Once);
 
             unitOfWorkMock.Verify(u => u
-            .Commit(It.IsAny<CancellationToken>()), Times.Once);
+            .CommitAsync(It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [Fact(DisplayName = nameof(ThrowWhenCategoryNotFound))]
