@@ -1,0 +1,13 @@
+version: '3.4'
+
+services:
+  fc.codeflix.catalog.fb:
+    container_name: catalogdb-e2e
+    hostname: catalogdb-e2e
+    image: mysql
+    ports:
+      - 33062:3306
+    environment:
+      MYSQL_USER: root-fc
+      MYSQL_PASSWORD: COD3fl1X.@
+      MYSQL_ROOT_PASSWORD: COD3fl1X.@

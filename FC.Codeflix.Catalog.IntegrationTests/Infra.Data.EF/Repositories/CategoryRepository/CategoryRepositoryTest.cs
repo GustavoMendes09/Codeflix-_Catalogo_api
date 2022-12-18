@@ -3,6 +3,10 @@ using FluentAssertions;
 using Repository = FC.Codeflix.Catalog.Infra.Data.EF.Repositories;
 using FC.Codeflix.Catalog.Application.Exceptions;
 using FC.Codeflix.Catalog.Domain.SeedWork.SearchableRepository;
+using System.Threading.Tasks;
+using System.Threading;
+using System.Collections.Generic;
+using System;
 
 namespace FC.Codeflix.Catalog.IntegrationTests.Infra.Data.EF.Repositories.CategoryRepository
 {

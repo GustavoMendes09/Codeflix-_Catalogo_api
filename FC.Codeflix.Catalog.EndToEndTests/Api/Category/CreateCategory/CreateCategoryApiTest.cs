@@ -6,6 +6,8 @@ using System.Net;
 using FC.Codeflix.Catalog.Application.UseCases.Category.CreateCategory;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using System;
+using System.Threading.Tasks;
 
 namespace FC.Codeflix.Catalog.EndToEndTests.Api.Category.CreateCategory
 {

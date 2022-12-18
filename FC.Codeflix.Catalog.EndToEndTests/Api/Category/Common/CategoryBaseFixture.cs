@@ -1,4 +1,7 @@
 ﻿using FC.Codeflix.Catalog.EndToEndTests.Base;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using DomainEntity = FC.Codeflix.Catalog.Domain.Entity;
 
 namespace FC.Codeflix.Catalog.EndToEndTests.Api.Category.Common

@@ -106,7 +106,7 @@ namespace FC.Codeflix.Catalog.UnitTests.Domain.Entity.Validation
             action.Should().NotThrow();
         }
 
-        private static IEnumerable<object[]> GetValuesGreaterThanMin(int numberOfTests)
+        public static IEnumerable<object[]> GetValuesGreaterThanMin(int numberOfTests)
         {
             var faker = new Faker();
             for (int i = 0; i < numberOfTests; i++)
@@ -130,7 +130,7 @@ namespace FC.Codeflix.Catalog.UnitTests.Domain.Entity.Validation
             action.Should().Throw<EntityValidationException>()
                 .WithMessage($"{fieldName} should be less or equal {maxLength} characters long");
         }
-        private static IEnumerable<object[]> GetValuesGreaterThanMax(int numberOfTests)
+        public static IEnumerable<object[]> GetValuesGreaterThanMax(int numberOfTests)
         {
             var faker = new Faker();
             for (int i = 0; i < (numberOfTests - 1); i++)
@@ -155,7 +155,7 @@ namespace FC.Codeflix.Catalog.UnitTests.Domain.Entity.Validation
             action.Should().NotThrow();
         }
 
-        private static IEnumerable<object[]> GetValuesLessThanMax(int numberOfTests)
+        public static IEnumerable<object[]> GetValuesLessThanMax(int numberOfTests)
         {
             var faker = new Faker();
             for (int i = 0; i < (numberOfTests - 1); i++)

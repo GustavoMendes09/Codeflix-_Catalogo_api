@@ -1,5 +1,8 @@
 ﻿using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Xunit;
 using UnitOfWorkInfra = FC.Codeflix.Catalog.Infra.Data.EF;
 
