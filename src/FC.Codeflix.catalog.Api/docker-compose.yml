@@ -1,4 +1,4 @@
-version: '3.4'
+﻿version: '3.4'
 
 services:
   fc.codeflix.catalog.fb:
@@ -9,3 +9,7 @@ services:
       - 33061:3306
     environment:
       MYSQL_ROOT_PASSWORD: COD3fl1X.@
+
+networks:
+  default:
+    name: service_catalog
