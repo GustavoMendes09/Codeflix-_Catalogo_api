@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.WebUtilities;
-using System;
+﻿using FC.Codeflix.catalog.Api.Configurations.Policies;
+using FC.Codeflix.Catalog.Api.Extensions;
+using Microsoft.AspNetCore.WebUtilities;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -12,10 +12,16 @@ namespace FC.Codeflix.Catalog.EndToEndTests.Base
     public class ApiClient
     {
         private readonly HttpClient _httpClient;
+        private readonly JsonSerializerOptions _defaulSerializerOptions;
 
         public ApiClient(HttpClient httpClient)
         {
             _httpClient = httpClient;
+            _defaulSerializerOptions = new JsonSerializerOptions()
+            {
+                PropertyNamingPolicy = new JsonSnakeCasePolicy(),
+                    PropertyNameCaseInsensitive = true
+            };
         }
 
         public async Task<(HttpResponseMessage?, TOutput?)> Post<TOutput>(string route, object payload) where TOutput : class
@@ -23,7 +29,7 @@ namespace FC.Codeflix.Catalog.EndToEndTests.Base
             var response = await _httpClient.PostAsync(
                 route,
                 new StringContent(
-                    JsonSerializer.Serialize(payload),
+                    JsonSerializer.Serialize(payload, _defaulSerializerOptions),
                     Encoding.UTF8,
                     "application/json")
                 );
@@ -54,7 +60,7 @@ namespace FC.Codeflix.Catalog.EndToEndTests.Base
             var response = await _httpClient.PutAsync(
                 route,
                 new StringContent(
-                    JsonSerializer.Serialize(payload),
+                    JsonSerializer.Serialize(payload, _defaulSerializerOptions),
                     Encoding.UTF8,
                     "application/json")
                 );
@@ -69,10 +75,7 @@ namespace FC.Codeflix.Catalog.EndToEndTests.Base
             TOutput? output = null;
 
             if (!string.IsNullOrEmpty(outputString))
-                output = JsonSerializer.Deserialize<TOutput>(outputString, new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                });
+                output = JsonSerializer.Deserialize<TOutput>(outputString, _defaulSerializerOptions);
 
             return output;
         }
@@ -82,7 +85,7 @@ namespace FC.Codeflix.Catalog.EndToEndTests.Base
             if(queryStringParametersObject == null)
                 return route;
 
-            var parametersJson = JsonSerializer.Serialize(queryStringParametersObject);
+            var parametersJson = JsonSerializer.Serialize(queryStringParametersObject, _defaulSerializerOptions);
             var parametersDictionary = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(parametersJson);
             return QueryHelpers.AddQueryString(route, parametersDictionary!);
     

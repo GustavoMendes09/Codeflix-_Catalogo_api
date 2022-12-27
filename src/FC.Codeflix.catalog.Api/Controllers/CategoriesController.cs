@@ -1,3 +1,5 @@
+using FC.Codeflix.catalog.Api.ApiModels.Category;
+using FC.Codeflix.catalog.Api.ApiModels.Response;
 using FC.Codeflix.Catalog.Application.UseCases.Category.Commom;
 using FC.Codeflix.Catalog.Application.UseCases.Category.CreateCategory;
 using FC.Codeflix.Catalog.Application.UseCases.Category.DeleteCategory;
@@ -36,19 +38,20 @@ namespace FC.Codeflix.catalog.Api.Controllers
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
-        public async Task<IActionResult> Update([FromBody] UpdateCategoryInput input, CancellationToken cancellationToken)
+        public async Task<IActionResult> Update([FromBody] UpdateCategoryApiInput apiInput,[FromRoute] Guid id, CancellationToken cancellationToken)
         {
+            var input = new UpdateCategoryInput(id, apiInput.Name, apiInput.Description, apiInput.IsActive);
             var output = await _mediator.Send(input, cancellationToken);
             return Ok(output);
         }
 
         [HttpGet("{id:guid}")]
-        [ProducesResponseType(typeof(CategoryModelOutput), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse<CategoryModelOutput>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById([FromRoute] Guid id, CancellationToken cancellationToken)
         {
             var output = await _mediator.Send(new GetCategoryInput(id), cancellationToken);
-            return Ok(output);
+            return Ok(new ApiResponse<CategoryModelOutput>(output));
         }
 
         [HttpDelete("{id:guid}")]
@@ -66,7 +69,7 @@ namespace FC.Codeflix.catalog.Api.Controllers
         public async Task<IActionResult> List(
             CancellationToken cancellationToken,
             [FromQuery] int? page = null,
-            [FromQuery] int? perPage = null,
+            [FromQuery(Name = "per_page")] int? perPage = null,
             [FromQuery] string? search = null,
             [FromQuery] string? sort = null,
             [FromQuery] SearchOrder? dir = null
@@ -80,7 +83,8 @@ namespace FC.Codeflix.catalog.Api.Controllers
             if (dir is not null) input.Dir = dir.Value;
 
             var output = await _mediator.Send(input, cancellationToken);
-            return Ok(output);
+            var response = new ApiResponseList<CategoryModelOutput>(output);
+            return Ok(response);
         }
     }
 }
