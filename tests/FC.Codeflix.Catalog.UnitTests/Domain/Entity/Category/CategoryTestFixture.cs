@@ -4,6 +4,12 @@ using DomainEntity = FC.Codeflix.Catalog.Domain.Entity;
 
 namespace FC.Codeflix.Catalog.UnitTests.Domain.Entity.Category
 {
+
+    [CollectionDefinition(nameof(CategoryTestFixture))]
+    public class CategoryTextFixtureCollection : ICollectionFixture<CategoryTestFixture>
+    {
+
+    }
     public class CategoryTestFixture : BaseFixture
     {
         public CategoryTestFixture() : base() { }
@@ -36,12 +42,6 @@ namespace FC.Codeflix.Catalog.UnitTests.Domain.Entity.Category
                 GetValidCategoryName(),
                 GetValidCategoryDescription()
                 );
-
-    }
-
-    [CollectionDefinition(nameof(CategoryTestFixture))]
-    public class CategoryTextFixtureCollection : ICollectionFixture<CategoryTestFixture>
-    {
 
     }
 }
