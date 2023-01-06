@@ -15,7 +15,7 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.Category.UpdateCategory
                id ?? Guid.NewGuid(),
                GetValidCategoryName(),
                GetValidCategoryDescription(),
-               getRandomBoolean()
+               GetRandomBoolean()
             );
     }
 }

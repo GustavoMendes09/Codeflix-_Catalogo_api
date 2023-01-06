@@ -32,15 +32,13 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.Category.Common
             return categoryDescription;
         }
 
-        public bool getRandomBoolean() =>
-            new Random().NextDouble() < 0.5;
 
 
         public Entity.Category GetExampleCategory()
             => new(
                 GetValidCategoryName(),
                 GetValidCategoryDescription(),
-                getRandomBoolean()
+                GetRandomBoolean()
                 );
 
         public Mock<ICategoryRepository> GetRepositoryMock() => new();

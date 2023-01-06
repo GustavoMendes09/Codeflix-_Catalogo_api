@@ -18,7 +18,7 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.Category.CreateCategory
             new(
                 GetValidCategoryName(),
                 GetValidCategoryDescription(),
-                getRandomBoolean()
+                GetRandomBoolean()
                 );
 
         public CreateCategoryInput GetInvalidInputShortName()
