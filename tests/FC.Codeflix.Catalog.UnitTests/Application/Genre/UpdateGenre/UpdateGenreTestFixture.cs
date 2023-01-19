@@ -7,12 +7,12 @@ using System;
 using System.Linq;
 using Xunit;
 
-namespace FC.Codeflix.Catalog.UnitTests.Application.Genre.CreateGenre
+namespace FC.Codeflix.Catalog.UnitTests.Application.Genre.UpdateGenre
 {
-    [CollectionDefinition(nameof(CreateGenreTestFixture))]
+    [CollectionDefinition(nameof(UpdateGenreTestFixture))]
 
-    public class CreateGenreTestFixtureCollection : ICollectionFixture<CreateGenreTestFixture>{}
-    public class CreateGenreTestFixture : GenreUseCasesBaseFixture
+    public class UpdateGenreTestFixtureCollection : ICollectionFixture<UpdateGenreTestFixture> {}
+    public class UpdateGenreTestFixture : GenreUseCasesBaseFixture
     {
         public CreateGenreInput GetExampleInputWithCategories()
         {
@@ -40,13 +40,6 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.Genre.CreateGenre
                 GetRandomBoolean()
                 );
 
-        public Mock<IGenreRepository> GetGenreRepositoryMock()
-        => new();
-
-        public Mock<IUnitOfWork> GetUnitOfWorkMock()
-        => new();
-
-        public Mock<ICategoryRepository> GetCategoryRepositoryMock()
-        => new();
+       
     }
 }
