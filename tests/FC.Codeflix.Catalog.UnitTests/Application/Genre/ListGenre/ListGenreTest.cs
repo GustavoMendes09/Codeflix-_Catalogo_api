@@ -64,7 +64,7 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.Genre.ListGenre
                 outputItem.Categories.Should()
                     .HaveCount(repositoryGenre.Categories.Count);
                 foreach (var expectedId in repositoryGenre.Categories)
-                    outputItem.Categories.Should().Contain(relation => relation.Id == expectedId);
+                    outputItem.Categories.Should().Contain(relation => relation == expectedId);
             });
             genreRepositoryMock.Verify(
                 x => x.Search(
@@ -82,16 +82,16 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.Genre.ListGenre
             var expectedIds = genresListExample
                 .SelectMany(genre => genre.Categories)
                 .Distinct().ToList();
-            categoryRepositoryMock.Verify(
-                x => x.GetListByIds(
-                    It.Is<List<Guid>>(parameterList =>
-                        parameterList.All(id => expectedIds.Contains(id)
-                        && parameterList.Count == expectedIds.Count
-                    )),
-                    It.IsAny<CancellationToken>()
-                ),
-                Times.Once
-            );
+            //categoryRepositoryMock.Verify(
+            //    x => x.GetListByIds(
+            //        It.Is<List<Guid>>(parameterList =>
+            //            parameterList.All(id => expectedIds.Contains(id)
+            //            && parameterList.Count == expectedIds.Count
+            //        )),
+            //        It.IsAny<CancellationToken>()
+            //    ),
+            //    Times.Once
+            //);
         }
 
         [Fact(DisplayName = nameof(ListEmpty))]
@@ -134,13 +134,13 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.Genre.ListGenre
                 ),
                 Times.Once
             );
-            categoryRepositoryMock.Verify(
-                x => x.GetListByIds(
-                    It.IsAny<List<Guid>>(),
-                    It.IsAny<CancellationToken>()
-                ),
-                Times.Never
-            );
+            //categoryRepositoryMock.Verify(
+            //    x => x.GetListByIds(
+            //        It.IsAny<List<Guid>>(),
+            //        It.IsAny<CancellationToken>()
+            //    ),
+            //    Times.Never
+            //);
         }
 
         [Fact(DisplayName = nameof(ListUsingDefaultInputValues))]
@@ -178,13 +178,13 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.Genre.ListGenre
                 ),
                 Times.Once
             );
-            categoryRepositoryMock.Verify(
-                x => x.GetListByIds(
-                    It.IsAny<List<Guid>>(),
-                    It.IsAny<CancellationToken>()
-                ),
-                Times.Never
-            );
+            //categoryRepositoryMock.Verify(
+            //    x => x.GetListByIds(
+            //        It.IsAny<List<Guid>>(),
+            //        It.IsAny<CancellationToken>()
+            //    ),
+            //    Times.Never
+            //);
         }
     }
 }

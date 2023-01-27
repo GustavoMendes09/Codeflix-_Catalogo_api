@@ -12,10 +12,12 @@ namespace FC.Codeflix.Catalog.Application.UseCases.Genre.ListGenres
     public class ListGenres : IListGenres
     {
         private readonly IGenreRepository _genreRepository;
+        private readonly ICategoryRepository _categoryRepository;
 
-        public ListGenres(IGenreRepository genreRepository)
+        public ListGenres(IGenreRepository genreRepository, ICategoryRepository categoryRepository)
         {
             _genreRepository = genreRepository;
+            _categoryRepository = categoryRepository;
         }
         public async Task<ListGenresOutput> Handle(ListGenresInput input, CancellationToken cancellationToken)
         {
