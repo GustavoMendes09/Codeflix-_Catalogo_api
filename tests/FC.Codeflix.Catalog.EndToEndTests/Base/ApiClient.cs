@@ -1,5 +1,4 @@
 ﻿using FC.Codeflix.catalog.Api.Configurations.Policies;
-using FC.Codeflix.Catalog.Api.Extensions;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Collections.Generic;
 using System.Net.Http;

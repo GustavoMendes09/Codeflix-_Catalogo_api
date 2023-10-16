@@ -25,7 +25,7 @@ namespace FC.Codeflix.Catalog.Application.UseCases.Genre.UpdateGenre
         }
         public async Task<GenreModelOutput> Handle(UpdateGenreInput request, CancellationToken cancellationToken)
         {
-            var genre = await _genreRepository.Get(request.Id, cancellationToken);
+            var genre = await _genreRepository.GetAsync(request.Id, cancellationToken);
             genre.Update(request.Name);
 
             if(request.IsActive is not null && request.IsActive != genre.IsActive)

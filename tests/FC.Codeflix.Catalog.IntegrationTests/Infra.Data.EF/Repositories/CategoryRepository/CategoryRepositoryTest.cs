@@ -52,7 +52,7 @@ namespace FC.Codeflix.Catalog.IntegrationTests.Infra.Data.EF.Repositories.Catego
             await dbContext.SaveChangesAsync(CancellationToken.None);
             var categoryRepository = new Repository.CategoryRepository(dbContext);
 
-            var dbCategory = await categoryRepository.Get(exampleCategory.Id, CancellationToken.None);
+            var dbCategory = await categoryRepository.GetAsync(exampleCategory.Id, CancellationToken.None);
 
             dbCategory.Should().NotBeNull();
             dbCategory.Id.Should().Be(exampleCategory.Id);
@@ -72,7 +72,7 @@ namespace FC.Codeflix.Catalog.IntegrationTests.Infra.Data.EF.Repositories.Catego
             await dbContext.SaveChangesAsync(CancellationToken.None);
             var categoryRepository = new Repository.CategoryRepository(dbContext);
 
-            var task = async () => await categoryRepository.Get(exampleId, CancellationToken.None);
+            var task = async () => await categoryRepository.GetAsync(exampleId, CancellationToken.None);
 
             await task.Should().ThrowAsync<NotFoundException>()
                 .WithMessage($"Category '{exampleId}' not found.");
@@ -117,7 +117,7 @@ namespace FC.Codeflix.Catalog.IntegrationTests.Infra.Data.EF.Repositories.Catego
             await dbContext.SaveChangesAsync(CancellationToken.None);
             var categoryRepository = new Repository.CategoryRepository(dbContext);
 
-            await categoryRepository.Delete(exampleCategory, CancellationToken.None);
+            await categoryRepository.DeleteAsync(exampleCategory, CancellationToken.None);
             await dbContext.SaveChangesAsync();
 
             var dbCategory = await (_fixture.CreateDbContext())

@@ -14,7 +14,7 @@ namespace FC.Codeflix.Catalog.Application.UseCases.Category.GetCategory
 
         public async Task<CategoryModelOutput> Handle(GetCategoryInput request, CancellationToken cancellationToken)
         {
-            var category = await _categoryRepository.Get(request.Id, cancellationToken);
+            var category = await _categoryRepository.GetAsync(request.Id, cancellationToken);
             return CategoryModelOutput.FromCategory(category);
         }
     }

@@ -33,7 +33,7 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.Genre.GetGenre
             var newNameExample = _fixture.GetValidGenreName();
             var newIsActive = !exampleGenre.IsActive;
 
-            genreRepositoryMock.Setup(x => x.Get(
+            genreRepositoryMock.Setup(x => x.GetAsync(
                 It.Is<Guid>(x => x == exampleGenre.Id), It.IsAny<CancellationToken>()
                 )).ReturnsAsync(exampleGenre);
 
@@ -56,7 +56,7 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.Genre.GetGenre
                 output.Categories.Should().Contain(expectedId);
 
             genreRepositoryMock.Verify(
-                x => x.Get(
+                x => x.GetAsync(
                     It.Is<Guid>(x => x == exampleGenre.Id),
                     It.IsAny<CancellationToken>()),
                 Times.Once);
@@ -69,7 +69,7 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.Genre.GetGenre
             var genreRepositoryMock = _fixture.GetGenreRepositoryMock();
             var exampleId = Guid.NewGuid();
 
-            genreRepositoryMock.Setup(x => x.Get(
+            genreRepositoryMock.Setup(x => x.GetAsync(
                 It.Is<Guid>(x => x == exampleId), It.IsAny<CancellationToken>()
                 )).ThrowsAsync(new NotFoundException($"Genre '{exampleId}' not found"));
 
@@ -82,7 +82,7 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.Genre.GetGenre
             var action = async () => await useCase.Handle(input, CancellationToken.None);
 
             await action.Should().ThrowAsync<NotFoundException>().WithMessage($"Genre '{exampleId}' not found");
-            genreRepositoryMock.Verify(x => x.Get(
+            genreRepositoryMock.Verify(x => x.GetAsync(
                 It.Is<Guid>(x => x == exampleId), It.IsAny<CancellationToken>()
                 ),Times.Once
                );

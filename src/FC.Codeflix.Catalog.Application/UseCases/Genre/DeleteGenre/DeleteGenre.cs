@@ -21,8 +21,8 @@ namespace FC.Codeflix.Catalog.Application.UseCases.Genre.DeleteGenre
         }
         public async Task<Unit> Handle(DeleteGenreInput request, CancellationToken cancellationToken)
         {
-            var genre = await _genreRepository.Get(request.Id, cancellationToken);
-            await _genreRepository.Delete(genre, cancellationToken);
+            var genre = await _genreRepository.GetAsync(request.Id, cancellationToken);
+            await _genreRepository.DeleteAsync(genre, cancellationToken);
             await _unitOfWork.CommitAsync(cancellationToken);
             return Unit.Value;
         }

@@ -1,4 +1,4 @@
-﻿using FC.Codeflix.Catalog.Api.Extensions;
+﻿using FC.Codeflix.catalog.Api.Extensions.String;
 using System.Text.Json;
 
 namespace FC.Codeflix.catalog.Api.Configurations.Policies

@@ -29,12 +29,17 @@ namespace FC.Codeflix.Catalog.Infra.Data.EF.Repositories
             }
         }
 
-        public Task Delete(Genre aggregate, CancellationToken cancellationToken)
+        public Task DeleteAsync(Genre aggregate, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            _genresCategories.RemoveRange(
+                _genresCategories.Where(x => x.GenreId == aggregate.Id)
+                );
+
+            _genres.Remove(aggregate);
+            return Task.CompletedTask;
         }
 
-        public async Task<Genre> Get(Guid id, CancellationToken cancellationToken)
+        public async Task<Genre> GetAsync(Guid id, CancellationToken cancellationToken)
         {
             var genre = await _genres.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
 

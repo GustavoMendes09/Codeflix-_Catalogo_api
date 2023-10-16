@@ -36,7 +36,7 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.Category.UpdateCategory
             var unitOfWorkMock = _fixture.GetUnitOfWorkMock();
 
             repositoryMock.Setup(r => r
-                .Get(exampleCategory.Id, It.IsAny<CancellationToken>()))
+                .GetAsync(exampleCategory.Id, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(exampleCategory);
 
             var useCase = new UseCase.UpdateCategory(repositoryMock.Object, unitOfWorkMock.Object);
@@ -51,7 +51,7 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.Category.UpdateCategory
             output.CreatedAt.Should().NotBeSameDateAs(default);
 
             repositoryMock.Verify(u => u
-            .Get(exampleCategory.Id, It.IsAny<CancellationToken>()), Times.Once);
+            .GetAsync(exampleCategory.Id, It.IsAny<CancellationToken>()), Times.Once);
 
             repositoryMock.Verify(u => u
             .Update(exampleCategory, It.IsAny<CancellationToken>()), Times.Once);
@@ -74,7 +74,7 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.Category.UpdateCategory
             var unitOfWorkMock = _fixture.GetUnitOfWorkMock();
 
             repositoryMock.Setup(r => r
-                .Get(exampleCategory.Id, It.IsAny<CancellationToken>()))
+                .GetAsync(exampleCategory.Id, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(exampleCategory);
 
             var useCase = new UseCase.UpdateCategory(repositoryMock.Object, unitOfWorkMock.Object);
@@ -89,7 +89,7 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.Category.UpdateCategory
             output.CreatedAt.Should().NotBeSameDateAs(default);
 
             repositoryMock.Verify(u => u
-            .Get(exampleCategory.Id, It.IsAny<CancellationToken>()), Times.Once);
+            .GetAsync(exampleCategory.Id, It.IsAny<CancellationToken>()), Times.Once);
 
             repositoryMock.Verify(u => u
             .Update(exampleCategory, It.IsAny<CancellationToken>()), Times.Once);
@@ -107,7 +107,7 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.Category.UpdateCategory
             var input = _fixture.GetValidInput();
 
             repositoryMock.Setup(r => r
-                .Get(input.Id, It.IsAny<CancellationToken>()))
+                .GetAsync(input.Id, It.IsAny<CancellationToken>()))
                 .ThrowsAsync(new NotFoundException($"category '{input.Id}' not found"));
 
             var useCase = new UseCase.UpdateCategory(repositoryMock.Object, unitOfWorkMock.Object);

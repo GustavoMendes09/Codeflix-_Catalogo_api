@@ -22,8 +22,8 @@ namespace FC.Codeflix.Catalog.Application.UseCases.Category.DeleteCategory
 
         public async Task<Unit> Handle(DeleteCategoryInput request, CancellationToken cancellationToken)
         {
-            var category = await _categoryRepository.Get(request.Id, cancellationToken);
-            await _categoryRepository.Delete(category, cancellationToken);
+            var category = await _categoryRepository.GetAsync(request.Id, cancellationToken);
+            await _categoryRepository.DeleteAsync(category, cancellationToken);
             await _unitOfWork.CommitAsync(cancellationToken);
             return Unit.Value;
         }

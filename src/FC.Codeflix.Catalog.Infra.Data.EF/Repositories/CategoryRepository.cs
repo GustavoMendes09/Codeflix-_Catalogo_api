@@ -24,7 +24,7 @@ namespace FC.Codeflix.Catalog.Infra.Data.EF.Repositories
         public async Task Insert(Category aggregate, CancellationToken cancellationToken) =>
             await _categories.AddAsync(aggregate, cancellationToken);
 
-        public async Task<Category> Get(Guid id, CancellationToken cancellationToken)
+        public async Task<Category> GetAsync(Guid id, CancellationToken cancellationToken)
         {
             var category = await _categories.AsNoTracking().FirstOrDefaultAsync(
                        x => x.Id == id,
@@ -39,7 +39,7 @@ namespace FC.Codeflix.Catalog.Infra.Data.EF.Repositories
         public Task Update(Category aggregate, CancellationToken cancellationToken) =>
             Task.FromResult(_categories.Update(aggregate));
 
-        public Task Delete(Category aggregate, CancellationToken cancellationToken)
+        public Task DeleteAsync(Category aggregate, CancellationToken cancellationToken)
         => Task.FromResult(_categories.Remove(aggregate));
 
 

@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json.Serialization;
 using System;
 
-namespace FC.Codeflix.Catalog.Api.Extensions
+namespace FC.Codeflix.catalog.Api.Extensions.String
 {
     public static class StringSnakeCaseExtension
     {

@@ -28,7 +28,7 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.Category.DeleteCategory
             var CategoryExample = _fixture.GetExampleCategory();
 
             repositoryMock
-                .Setup(x => x.Get(CategoryExample.Id, It.IsAny<CancellationToken>()))
+                .Setup(x => x.GetAsync(CategoryExample.Id, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(CategoryExample);
 
             var input = new UseCase.DeleteCategoryInput(CategoryExample.Id);
@@ -36,8 +36,8 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.Category.DeleteCategory
 
             await useCase.Handle(input, CancellationToken.None);
 
-            repositoryMock.Verify(x => x.Get(CategoryExample.Id, It.IsAny<CancellationToken>()), Times.Once);
-            repositoryMock.Verify(x => x.Delete(CategoryExample, It.IsAny<CancellationToken>()), Times.Once);
+            repositoryMock.Verify(x => x.GetAsync(CategoryExample.Id, It.IsAny<CancellationToken>()), Times.Once);
+            repositoryMock.Verify(x => x.DeleteAsync(CategoryExample, It.IsAny<CancellationToken>()), Times.Once);
 
             unitOfWorkMock.Verify(x => x.CommitAsync(It.IsAny<CancellationToken>()), Times.Once);
         }
@@ -51,7 +51,7 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.Category.DeleteCategory
             var exampleGuid = Guid.NewGuid();
 
             repositoryMock
-                .Setup(x => x.Get(exampleGuid, It.IsAny<CancellationToken>()))
+                .Setup(x => x.GetAsync(exampleGuid, It.IsAny<CancellationToken>()))
                 .ThrowsAsync(new NotFoundException($"Category '{exampleGuid}' not found"));
 
             var input = new UseCase.DeleteCategoryInput(exampleGuid);
@@ -61,7 +61,7 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.Category.DeleteCategory
 
             await task.Should().ThrowAsync<NotFoundException>();
 
-            repositoryMock.Verify(x => x.Get(exampleGuid, It.IsAny<CancellationToken>()), Times.Once);
+            repositoryMock.Verify(x => x.GetAsync(exampleGuid, It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 }

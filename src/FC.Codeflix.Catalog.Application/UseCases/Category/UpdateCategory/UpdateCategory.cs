@@ -18,7 +18,7 @@ namespace FC.Codeflix.Catalog.Application.UseCases.Category.UpdateCategory
 
         public async Task<CategoryModelOutput> Handle(UpdateCategoryInput request, CancellationToken cancellationToken)
         {
-            var category = await _categoryRepository.Get(request.Id, cancellationToken);
+            var category = await _categoryRepository.GetAsync(request.Id, cancellationToken);
             category.Update(request.Name, request.Description);
 
             if (request.IsActive != category.IsActive)

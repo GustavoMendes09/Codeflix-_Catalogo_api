@@ -30,7 +30,7 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.Genre.DeleteGenre
             var unitOfWorkMock = _fixture.GetUnitOfWorkMock();
             var exampleGenre = _fixture.GetExampleGenre();
 
-            genreRepositoryMock.Setup(x => x.Get(
+            genreRepositoryMock.Setup(x => x.GetAsync(
                 It.Is<Guid>(x => x == exampleGenre.Id), It.IsAny<CancellationToken>()
                 )).ReturnsAsync(exampleGenre);
 
@@ -45,13 +45,13 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.Genre.DeleteGenre
 
             
             genreRepositoryMock.Verify(
-                x => x.Delete(
+                x => x.DeleteAsync(
                     It.Is<DomainEntity.Genre>(x => x.Id == exampleGenre.Id),
                     It.IsAny<CancellationToken>()),
                 Times.Once);
 
             genreRepositoryMock.Verify(
-                x => x.Get(
+                x => x.GetAsync(
                 It.Is<Guid>(x => x == exampleGenre.Id), It.IsAny<CancellationToken>()
                 ),Times.Once
                );
@@ -70,7 +70,7 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.Genre.DeleteGenre
             var unitOfWorkMock = _fixture.GetUnitOfWorkMock();
             var exampleId = Guid.NewGuid();
 
-            genreRepositoryMock.Setup(x => x.Get(
+            genreRepositoryMock.Setup(x => x.GetAsync(
                 It.Is<Guid>(x => x == exampleId), It.IsAny<CancellationToken>()
                 )).ThrowsAsync(new NotFoundException($"Genre '{exampleId}' not found"));
 
@@ -85,7 +85,7 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.Genre.DeleteGenre
             var action = async () => await useCase.Handle(input, CancellationToken.None);
 
             await action.Should().ThrowAsync<NotFoundException>().WithMessage($"Genre '{exampleId}' not found");
-            genreRepositoryMock.Verify(x => x.Get(
+            genreRepositoryMock.Verify(x => x.GetAsync(
                 It.Is<Guid>(x => x == exampleId), It.IsAny<CancellationToken>()
                 ), Times.Once
                );

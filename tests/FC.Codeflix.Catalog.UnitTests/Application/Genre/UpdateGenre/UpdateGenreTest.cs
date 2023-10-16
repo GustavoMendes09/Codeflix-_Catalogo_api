@@ -35,7 +35,7 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.Genre.UpdateGenre
             var newNameExample = _fixture.GetValidGenreName();
             var newIsActive = !exampleGenre.IsActive;
 
-            genreRepositoryMock.Setup(x => x.Get(
+            genreRepositoryMock.Setup(x => x.GetAsync(
                 It.Is<Guid>(x => x == exampleGenre.Id), It.IsAny<CancellationToken>()
                 )).ReturnsAsync(exampleGenre);
 
@@ -72,7 +72,7 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.Genre.UpdateGenre
             var genreRepositoryMock = _fixture.GetGenreRepositoryMock();
             var exampleId = Guid.NewGuid();
 
-            genreRepositoryMock.Setup(x => x.Get(
+            genreRepositoryMock.Setup(x => x.GetAsync(
                 It.IsAny<Guid>(), It.IsAny<CancellationToken>()
                 )).ThrowsAsync(new NotFoundException($"Genre '{exampleId}' not found."));
 
@@ -103,7 +103,7 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.Genre.UpdateGenre
             var newNameExample = _fixture.GetValidGenreName();
             var newIsActive = !exampleGenre.IsActive;
 
-            genreRepositoryMock.Setup(x => x.Get(
+            genreRepositoryMock.Setup(x => x.GetAsync(
                 It.Is<Guid>(x => x == exampleGenre.Id), It.IsAny<CancellationToken>()
                 )).ReturnsAsync(exampleGenre);
 
@@ -133,7 +133,7 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.Genre.UpdateGenre
             var newNameExample = _fixture.GetValidGenreName();
             var newIsActive = !exampleGenre.IsActive;
 
-            genreRepositoryMock.Setup(x => x.Get(
+            genreRepositoryMock.Setup(x => x.GetAsync(
                 It.Is<Guid>(x => x == exampleGenre.Id), It.IsAny<CancellationToken>()
                 )).ReturnsAsync(exampleGenre);
 
@@ -175,7 +175,7 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.Genre.UpdateGenre
             var newNameExample = _fixture.GetValidGenreName();
             var newIsActive = !exampleGenre.IsActive;
 
-            genreRepositoryMock.Setup(x => x.Get(
+            genreRepositoryMock.Setup(x => x.GetAsync(
                 It.Is<Guid>(x => x == exampleGenre.Id), It.IsAny<CancellationToken>()
                 )).ReturnsAsync(exampleGenre);
 
@@ -226,7 +226,7 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.Genre.UpdateGenre
             var newNameExample = _fixture.GetValidGenreName();
             var newIsActive = !exampleGenre.IsActive;
 
-            genreRepositoryMock.Setup(x => x.Get(
+            genreRepositoryMock.Setup(x => x.GetAsync(
                 It.Is<Guid>(x => x == exampleGenre.Id), It.IsAny<CancellationToken>()
                 )).ReturnsAsync(exampleGenre);
 
@@ -283,7 +283,7 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.Genre.UpdateGenre
             var newNameExample = _fixture.GetValidGenreName();
             var newIsActive = !exampleGenre.IsActive;
 
-            genreRepositoryMock.Setup(x => x.Get(
+            genreRepositoryMock.Setup(x => x.GetAsync(
                 It.Is<Guid>(x => x == exampleGenre.Id), It.IsAny<CancellationToken>()
                 )).ReturnsAsync(exampleGenre);
 
@@ -319,7 +319,7 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.Genre.UpdateGenre
             var newNameExample = _fixture.GetValidGenreName();
             var newIsActive = !exampleGenre.IsActive;
 
-            genreRepositoryMock.Setup(x => x.Get(
+            genreRepositoryMock.Setup(x => x.GetAsync(
                 It.Is<Guid>(x => x == exampleGenre.Id), It.IsAny<CancellationToken>()
                 )).ReturnsAsync(exampleGenre);
 
@@ -372,7 +372,7 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.Genre.UpdateGenre
             var newNameExample = _fixture.GetValidGenreName();
             var newIsActive = !exampleGenre.IsActive;
 
-            genreRepositoryMock.Setup(x => x.Get(
+            genreRepositoryMock.Setup(x => x.GetAsync(
                 It.Is<Guid>(x => x == exampleGenre.Id), It.IsAny<CancellationToken>()
                 )).ReturnsAsync(exampleGenre);
 

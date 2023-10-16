@@ -19,7 +19,7 @@ namespace FC.Codeflix.Catalog.Application.UseCases.Genre.GetGenre
 
         public async Task<GenreModelOutput> Handle(GetGenreInput request, CancellationToken cancellationToken)
         {
-            var genre = await _genreRepository.Get(request.Id, cancellationToken);
+            var genre = await _genreRepository.GetAsync(request.Id, cancellationToken);
             return GenreModelOutput.FromGenre(genre);
         }
     }
