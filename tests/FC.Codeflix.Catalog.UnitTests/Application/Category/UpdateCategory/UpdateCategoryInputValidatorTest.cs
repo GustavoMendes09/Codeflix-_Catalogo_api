@@ -1,5 +1,6 @@
 ﻿using FC.Codeflix.Catalog.Application.UseCases.Category.UpdateCategory;
 using FluentAssertions;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace FC.Codeflix.Catalog.UnitTests.Application.Category.UpdateCategory
         [Trait("Application", "UpdateCategoryInputValidator - Use Cases")]
         public void DontValidateWhenEmptyGuid()
         {
+            ValidatorOptions.Global.LanguageManager.Enabled = false;
             var input = _fixture.GetValidInput(Guid.Empty);
             var validator = new UpdateCategoryInputValidator();
 

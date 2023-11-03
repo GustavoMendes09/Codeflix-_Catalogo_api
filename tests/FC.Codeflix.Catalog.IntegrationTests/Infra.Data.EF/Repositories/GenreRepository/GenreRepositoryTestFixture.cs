@@ -5,6 +5,7 @@ using Xunit;
 using DomainEntity = FC.Codeflix.Catalog.Domain.Entity;
 using FC.Codeflix.Catalog.Domain.Entity;
 using System.Linq;
+using FC.Codeflix.Catalog.Domain.SeedWork.SearchableRepository;
 
 namespace FC.Codeflix.Catalog.IntegrationTests.Infra.Data.EF.Repositories.GenreRepository
 {
@@ -13,18 +14,39 @@ namespace FC.Codeflix.Catalog.IntegrationTests.Infra.Data.EF.Repositories.GenreR
     { }
     public class GenreRepositoryTestFixture : BaseFixture
     {
+
         public string GetValidGenreName()
             => Faker.Commerce.Categories(1)[0];
 
-        public DomainEntity.Genre GetExampleGenre(bool? isActive = null, List<Guid>? categoriesIds = null)
+        public DomainEntity.Genre GetExampleGenre(
+        bool? isActive = null,
+        List<Guid>? categoriesIds = null,
+        string? name = null
+        )
         {
-            var genre = new DomainEntity.Genre(GetValidGenreName(), isActive ?? GetRandomBoolean());
+            var genre = new DomainEntity.Genre(
+                name ?? GetValidGenreName(),
+                isActive ?? GetRandomBoolean()
+            );
             categoriesIds?.ForEach(genre.AddCategory);
             return genre;
         }
 
         public bool GetRandomBoolean() =>
             new Random().NextDouble() < 0.5;
+
+        public List<Genre> GetExampleListGenres(int count = 10)
+        => Enumerable
+            .Range(1, count)
+            .Select(_ => GetExampleGenre())
+            .ToList();
+
+        public List<Genre> GetExampleListGenresByNames(List<string> names)
+        => names
+            .Select(name => GetExampleGenre(name: name))
+            .ToList();
+
+       
 
         public string GetValidCategoryName()
         {
@@ -60,5 +82,27 @@ namespace FC.Codeflix.Catalog.IntegrationTests.Infra.Data.EF.Repositories.GenreR
             .Range(1, lenght)
             .Select(_ => GetExampleCategory())
             .ToList();
+
+        public List<Genre> CloneGenreListOrdered(
+           List<Genre> genreList,
+           string orderBy,
+           SearchOrder order
+        )
+        {
+            var listClone = new List<Genre>(genreList);
+            var orderedEnumerable = (orderBy.ToLower(), order) switch
+            {
+                ("name", SearchOrder.Asc) => listClone.OrderBy(x => x.Name)
+                    .ThenBy(x => x.Id),
+                ("name", SearchOrder.Desc) => listClone.OrderByDescending(x => x.Name)
+                    .ThenByDescending(x => x.Id),
+                ("id", SearchOrder.Asc) => listClone.OrderBy(x => x.Id),
+                ("id", SearchOrder.Desc) => listClone.OrderByDescending(x => x.Id),
+                ("createdat", SearchOrder.Asc) => listClone.OrderBy(x => x.CreatedAt),
+                ("createdat", SearchOrder.Desc) => listClone.OrderByDescending(x => x.CreatedAt),
+                _ => listClone.OrderBy(x => x.Name).ThenBy(x => x.Id),
+            };
+            return orderedEnumerable.ToList();
+        }
     }
 }

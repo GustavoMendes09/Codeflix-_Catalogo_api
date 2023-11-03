@@ -46,7 +46,7 @@ namespace FC.Codeflix.Catalog.Infra.Data.EF.Repositories
             NotFoundException.ThrowIfNull(genre, $"Genre '{id}' not found.");
 
             var caregoryIds = await _genresCategories
-                .Where(x => x.GenreId == genre.Id)
+                .Where(x => x.GenreId == genre!.Id)
                 .Select(x => x.CategoryId)
                 .ToListAsync(cancellationToken);
 
@@ -54,14 +54,72 @@ namespace FC.Codeflix.Catalog.Infra.Data.EF.Repositories
             return genre;
         }
 
-        public Task<SearchOutput<Genre>> Search(SearchInput input, CancellationToken cancellationToken)
+        public async Task Update(Genre genre, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            _genres.Update(genre);
+            _genresCategories.RemoveRange(_genresCategories.Where(x => x.GenreId == genre.Id));
+
+            if (genre.Categories.Count > 0)
+            {
+                var relations = genre.Categories
+                    .Select(categoryId => new GenresCategories(categoryId, genre.Id));
+                await _genresCategories.AddRangeAsync(relations);
+            }
         }
 
-        public Task Update(Genre aggregate, CancellationToken cancellationToken)
+        public async Task<SearchOutput<Genre>> Search(SearchInput input, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var toSkip = (input.Page - 1) * input.PerPage;
+            var query = _genres.AsNoTracking();
+            query = AddOrderToQuery(query, input.OrderBy, input.Order);
+
+            if(!string.IsNullOrWhiteSpace(input.Search))
+                query = query.Where(g => g.Name.Contains(input.Search));
+
+            var total = await query.CountAsync(cancellationToken);
+
+            var genres = await query
+                .Skip(toSkip)
+                .Take(input.PerPage)
+                .ToListAsync(cancellationToken);
+
+            var genresIds = genres.Select(g => g.Id).ToList();
+            var relations = await _genresCategories
+            .Where(relation =>  genresIds.Contains(relation.GenreId))
+            .ToListAsync(cancellationToken);
+
+            var relationsByGenreIdGroup = relations.GroupBy(x => x.GenreId).ToList();
+
+            relationsByGenreIdGroup.ForEach(relationGroup => {
+                var genre = genres.Find(g => g.Id == relationGroup.Key);
+                if(genre is null) return;
+
+                relationGroup
+                    .ToList()
+                    .ForEach(r => genre.AddCategory(r.CategoryId));
+            });
+
+            return new SearchOutput<Genre>(
+                input.Page,
+                input.PerPage,
+                total,
+                genres
+            );
+        }
+
+        private IQueryable<Genre> AddOrderToQuery(IQueryable<Genre> query, string orderProperty, SearchOrder order)
+        {
+        var orderedQuery = (orderProperty.ToLower(), order) switch
+           {
+               ("name", SearchOrder.Asc) => query.OrderBy(x => x.Name).ThenBy(x => x.Id),
+               ("name", SearchOrder.Desc) => query.OrderByDescending(x => x.Name).ThenByDescending(x => x.Id),
+               ("id", SearchOrder.Asc) => query.OrderBy(x => x.Id),
+               ("id", SearchOrder.Desc) => query.OrderByDescending(x => x.Id),
+               ("createdat", SearchOrder.Asc) => query.OrderBy(x => x.CreatedAt),
+               ("createdat", SearchOrder.Desc) => query.OrderByDescending(x => x.CreatedAt),
+               _ => query.OrderBy(x => x.Name).ThenBy(x => x.Id)
+           };
+           return orderedQuery;
         }
     }
 }
